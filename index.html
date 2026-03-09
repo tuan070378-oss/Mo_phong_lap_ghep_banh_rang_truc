@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mô phỏng Lắp ghép Bánh răng - Trục</title>
+    <script>
+      // Robust fix for "TypeError: Cannot set property fetch of #<Window> which has only a getter"
+      (function() {
+        var originalFetch = window.fetch;
+        function applyFix(target) {
+          try {
+            var desc = Object.getOwnPropertyDescriptor(target, 'fetch');
+            if (desc && desc.configurable) {
+              Object.defineProperty(target, 'fetch', {
+                get: function() { return this._fetch || originalFetch; },
+                set: function(v) { this._fetch = v; },
+                configurable: true,
+                enumerable: true
+              });
+              return true;
+            }
+          } catch (e) {}
+          return false;
+        }
+
+        // Try window instance
+        applyFix(window);
+        
+        // Try Window prototype
+        if (window.Window && window.Window.prototype) {
+          applyFix(window.Window.prototype);
+        }
+        
+        // Try global prototype
+        var proto = Object.getPrototypeOf(window);
+        while (proto) {
+          applyFix(proto);
+          proto = Object.getPrototypeOf(proto);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
